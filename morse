@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""
+Morse Code Translator - Test Examples
+Demonstrates the functionality of the morse code translator
+"""
+
+# Morse code dictionary
+MORSE_CODE_DICT = {
+    'A': '.-',    'B': '-...',  'C': '-.-.',  'D': '-..',   'E': '.',
+    'F': '..-.',  'G': '--.',   'H': '....',  'I': '..',    'J': '.---',
+    'K': '-.-',   'L': '.-..',  'M': '--',    'N': '-.',    'O': '---',
+    'P': '.--.',  'Q': '--.-',  'R': '.-.',   'S': '...',   'T': '-',
+    'U': '..-',   'V': '...-',  'W': '.--',   'X': '-..-',  'Y': '-.--',
+    'Z': '--..',
+    '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+    '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+    '.': '.-.-.-', ',': '--..--', '?': '..--..', "'": '.----.',
+    '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-',
+    '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-',
+    '+': '.-.-.', '-': '-....-', '_': '..--.-', '"': '.-..-.',
+    '$': '...-..-', '@': '.--.-.'
+}
+
+REVERSE_MORSE_DICT = {v: k for k, v in MORSE_CODE_DICT.items()}
+
+def text_to_morse(text):
+    """Convert text to morse code."""
+    morse_code = []
+    for char in text.upper():
+        if char == ' ':
+            morse_code.append('/')
+        elif char in MORSE_CODE_DICT:
+            morse_code.append(MORSE_CODE_DICT[char])
+    return ' '.join(morse_code)
+
+def morse_to_text(morse_code):
+    """Convert morse code to text."""
+    words = morse_code.split(' / ')
+    decoded_text = []
+    
+    for word in words:
+        letters = word.split(' ')
+        decoded_word = ''
+        for letter in letters:
+            if letter and letter in REVERSE_MORSE_DICT:
+                decoded_word += REVERSE_MORSE_DICT[letter]
+        decoded_text.append(decoded_word)
+    
+    return ' '.join(decoded_text)
+
+# Test examples
+print("="*60)
+print("MORSE CODE TRANSLATOR - TEST EXAMPLES")
+print("="*60)
+
+print("\n📝 TEXT TO MORSE CONVERSION:")
+print("-"*60)
+test_texts = ["HELLO", "WORLD", "PYTHON", "SOS", "HELLO WORLD"]
+for text in test_texts:
+    morse = text_to_morse(text)
+    print(f"'{text:15}' → {morse}")
+
+print("\n📡 MORSE TO TEXT CONVERSION:")
+print("-"*60)
+test_morse = [
+    ".... . .-.. .-.. ---",
+    ".- / -... / -.-.",
+    "... --- ...",
+    ".... . .-.. .-.. --- / .-- --- .-. .-.. -.."
+]
+for morse in test_morse:
+    text = morse_to_text(morse)
+    print(f"{morse:45} → '{text}'")
+
+print("\n🔄 ROUND-TRIP TEST (Text → Morse → Text):")
+print("-"*60)
+original_texts = ["HELLO WORLD", "PYTHON", "MORSE CODE"]
+for original in original_texts:
+    morse = text_to_morse(original)
+    decoded = morse_to_text(morse)
+    match = "✓" if original == decoded else "✗"
+    print(f"{match} {original:15} → {morse:40} → {decoded}")
+
+print("\n" + "="*60)
